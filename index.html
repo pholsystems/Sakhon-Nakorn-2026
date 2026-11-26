@@ -101,6 +101,13 @@ main { padding: 14px 16px 24px; max-width: 640px; margin: 0 auto; }
 .slot[data-kind="eat"] .tag { background: var(--warn-soft); color: var(--warn); }
 .slot[data-kind="move"] .tag { background: var(--line); color: var(--muted); }
 .slot[data-kind="rest"] .tag { background: var(--ok-soft); color: var(--ok); }
+.why { margin: 4px 0 4px; font-size: 15px; color: var(--ink); }
+.leg { margin: -2px 0 0; padding-left: 66px; font-size: 14px; }
+.leg a { display: inline-flex; align-items: center; min-height: 40px; color: var(--indigo); font-weight: 600; text-decoration: none; border-bottom: 1px dashed var(--indigo); }
+.field { display: grid; gap: 6px; margin: 6px 0 10px; font-size: 14px; color: var(--muted); }
+.field input, .field textarea { font: inherit; font-size: 16px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%; }
+.field textarea { min-height: 64px; resize: vertical; }
+.total { font-variant-numeric: tabular-nums; }
 .note { margin: 6px 0 0; font-size: 15px; }
 .nowflag { display: inline-block; font-size: 12px; font-weight: 700; color: #fff; background: var(--lake); padding: 1px 8px; border-radius: 10px; margin-left: 6px; vertical-align: 1px; }
 :root[data-theme="dark"] .nowflag { color: #10151f; }
@@ -166,43 +173,43 @@ const P = {
   terminal1: { name: "บขส.สกลนคร แห่งที่ 1", en: "Sakon Nakhon Bus Terminal No. 1", q: "บขส.สกลนคร แห่งที่ 1 ถนนรัฐพัฒนา สกลนคร",
     addr: "ตำบลธาตุเชิงชุม อำเภอเมืองสกลนคร จังหวัดสกลนคร 47000 (ถนนรัฐพัฒนา)", hoursText: "ไม่ระบุในข้อมูล" },
   hotel: { name: "Tong Pra Chock สกลนคร", q: "Tong Pra Chock สกลนคร", addr: "ยังไม่มีที่อยู่ในข้อมูล ค้นหาจากชื่อในแผนที่", hoursText: "เช็กอินตามที่โรงแรมกำหนด" },
-  wat: { name: "วัดพระธาตุเชิงชุมวรวิหาร", en: "Wat Phra That Choeng Chum Worawihan", q: "Wat Phra That Choeng Chum Worawihan Sakon Nakhon",
+  wat: { why: "วัดคู่บ้านคู่เมือง องค์พระธาตุสีขาวยอดฉัตรทอง อยู่ใจกลางเมือง เดินต่อไปย่านของกินได้", name: "วัดพระธาตุเชิงชุมวรวิหาร", en: "Wat Phra That Choeng Chum Worawihan", q: "Wat Phra That Choeng Chum Worawihan Sakon Nakhon",
     addr: "1255 ถนนเรืองสวัสดิ์ ตำบลธาตุเชิงชุม อำเภอเมืองสกลนคร 47000", hours: ["06:00","22:00"], tel: ["089 941 3972"],
     info: "วัดคู่บ้านคู่เมือง องค์พระธาตุสีขาว ยอดฉัตรทองคำ" },
-  lake: { name: "หนองหาร", en: "Nong Han Lake", q: "Nong Han Lake Sakon Nakhon", addr: "อำเภอเมืองสกลนคร จังหวัดสกลนคร", hoursText: "พื้นที่เปิดโล่ง",
+  lake: { why: "ทะเลสาบน้ำจืดใหญ่ของอีสาน ลมเย็นช่วงเย็น เหมาะดูพระอาทิตย์ตก", name: "หนองหาร", en: "Nong Han Lake", q: "Nong Han Lake Sakon Nakhon", addr: "อำเภอเมืองสกลนคร จังหวัดสกลนคร", hoursText: "พื้นที่เปิดโล่ง",
     info: "ทะเลสาบน้ำจืดขนาดใหญ่ ลมเย็นช่วงกลางเดือนธันวาคม เหมาะดูพระอาทิตย์ตก" },
-  ping: { ll: [17.1223, 104.0207], name: "โค้งคดเคี้ยว ทางหลวง 213", en: "Khong Ping Ngu Curves at Route 213", q: "42CC+W7J ห้วยยาง สกลนคร",
+  ping: { why: "ถนนคดเคี้ยวผ่านเนินเขาและป่า จุดแวะถ่ายภาพและลองขับรถเช่าตอนเช้า", ll: [17.1223, 104.0207], name: "โค้งคดเคี้ยว ทางหลวง 213", en: "Khong Ping Ngu Curves at Route 213", q: "42CC+W7J ห้วยยาง สกลนคร",
     addr: "42CC+W7J ตำบลห้วยยาง อำเภอเมืองสกลนคร 47000", hoursText: "เปิด 24 ชั่วโมง",
     info: "ถนนคดเคี้ยวตัดผ่านเนินเขาและป่าไม้ จุดแวะถ่ายภาพ จอดในที่ปลอดภัยและเห็นทางชัดเจนเท่านั้น" },
-  phuphan: { name: "อุทยานแห่งชาติภูพาน", en: "Phu Phan National Park", q: "Phu Phan National Park Sakon Nakhon",
+  phuphan: { why: "อากาศเย็นบนเทือกเขาภูพาน มีทางเดินป่าและจุดชมวิว ไม่ร้อนจัดตอนกลางวัน", name: "อุทยานแห่งชาติภูพาน", en: "Phu Phan National Park", q: "Phu Phan National Park Sakon Nakhon",
     addr: "ตำบลห้วยยาง อำเภอเมืองสกลนคร 47000", hours: ["08:00","16:30"], tel: ["081 263 5029","086 459 5600"],
     info: "อากาศเย็น เส้นทางเดินป่า จุดชมวิว อีเมลอุทยาน phuphan2554@hotmail.com" },
-  daen: { name: "วัดถ้ำผาแดง", en: "Wat Tham Pha Daen", q: "Wat Tham Pha Daen Sakon Nakhon",
+  daen: { why: "วัดบนเนินเขา วิวหุบเขา งานแกะสลักหินผา และเจดีย์สีทอง", name: "วัดถ้ำผาแดง", en: "Wat Tham Pha Daen", q: "Wat Tham Pha Daen Sakon Nakhon",
     addr: "ทางหลวงแผ่นดินหมายเลข 2339 ตำบลดงมะไฟ อำเภอเมืองสกลนคร 47000", hours: ["08:00","17:00"], tel: ["083 626 3353","083 626 3475","042 707 342"],
     link: "http://esan108.com/%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%96%E0%B9%89%E0%B8%B3%E0%B8%9C%E0%B8%B2%E0%B9%81%E0%B8%94%E0%B9%88%E0%B8%99.html", linkLabel: "ข้อมูลวัด (esan108)",
     info: "วิวหุบเขา งานแกะสลักหินผา เจดีย์สีทอง สวนภูมิทัศน์ ควรถึงก่อนปิด 17:00" },
-  tharae: { name: "ชุมชนท่าแร่", en: "Tha Rae Village, Vietnamese French Colonial Style", q: "Tha Rae Village Sakon Nakhon",
+  tharae: { why: "ชุมชนคาทอลิกเก่าแก่ริมหนองหาร อาคารสไตล์เวียดนามผสมฝรั่งเศส เงียบสงบ", name: "ชุมชนท่าแร่", en: "Tha Rae Village, Vietnamese French Colonial Style", q: "Tha Rae Village Sakon Nakhon",
     addr: "145 5 ตำบลท่าแร่ อำเภอเมืองสกลนคร 47230", hoursText: "เปิด 24 ชั่วโมง", tel: ["083 338 3823"],
     info: "ชุมชนคาทอลิกเก่าแก่ริมหนองหาร สถาปัตยกรรมเฉพาะตัว บรรยากาศเงียบสงบ" },
-  cathedral: { ll: [17.2539, 104.1839], name: "อาสนวิหารเซนต์ไมเคิล ท่าแร่", en: "Cathedral of St Michael the Archangel", q: "753M+HHG ท่าแร่ สกลนคร",
+  cathedral: { why: "อาสนวิหารสำคัญกลางชุมชนท่าแร่ ช่วงกลางเดือนธันวาคมเริ่มมีบรรยากาศคริสต์มาส", ll: [17.2539, 104.1839], name: "อาสนวิหารเซนต์ไมเคิล ท่าแร่", en: "Cathedral of St Michael the Archangel", q: "753M+HHG ท่าแร่ สกลนคร",
     addr: "753M+HHG ตำบลท่าแร่ อำเภอเมืองสกลนคร 47230", hoursText: "เปิด 24 ชั่วโมง", tel: ["042 751 090"],
     info: "อาสนวิหารสำคัญใจกลางชุมชนท่าแร่" },
-  lotus: { ll: [17.2614, 104.1546], name: "อุทยานบัว ม.เกษตรศาสตร์", en: "Kasetsart University Lotus and Waterlily Park", q: "7563+HRH เชียงเครือ สกลนคร",
+  lotus: { why: "สะพานไม้ผ่านสระบัวหลายสายพันธุ์ เดินสบายก่อนคืนรถ", ll: [17.2614, 104.1546], name: "อุทยานบัว ม.เกษตรศาสตร์", en: "Kasetsart University Lotus and Waterlily Park", q: "7563+HRH เชียงเครือ สกลนคร",
     addr: "7563+HRH ตำบลเชียงเครือ อำเภอเมืองสกลนคร 47000", hours: ["08:30","16:30"], weekendHours: ["08:30","18:00"], tel: ["062 312 1825"],
     info: "สะพานไม้ทอดผ่านสระบัวหลายสายพันธุ์ จันทร์–ศุกร์ 08:30–16:30 เสาร์–อาทิตย์ 08:30–18:00" },
-  lert: { name: "Lert Rot kai kata", q: "Lert Rot kai kata สกลนคร", addr: "620, 2 ถนนสุขเกษม ตำบลธาตุเชิงชุม อำเภอเมืองสกลนคร 47000",
+  lert: { why: "ร้านอาหารเช้าสไตล์ตึกแถว รีวิวเยอะ ไข่กระทะและขนมปังยัดไส้", name: "Lert Rot kai kata", q: "Lert Rot kai kata สกลนคร", addr: "620, 2 ถนนสุขเกษม ตำบลธาตุเชิงชุม อำเภอเมืองสกลนคร 47000",
     hours: ["06:00","13:00"], tel: ["042 713 949","091 861 2302"], info: "ไข่กระทะ ขนมปังยัดไส้ ข้าวเปียกเส้น รีวิวบน Google Maps จำนวนมาก" },
-  pak: { ll: [17.1621, 104.1468], name: "Pak Mor Paris (ข้าวเกรียบปากหม้อ)", q: "546W+RPJ ซอยเปรมปรีดา 7 สกลนคร", addr: "546W+RPJ ซอยเปรมปรีดา 7 ตำบลธาตุเชิงชุม อำเภอเมืองสกลนคร 47000",
+  pak: { why: "ปากหม้อสไตล์เวียดนาม เสิร์ฟเร็ว แป้งบางนุ่ม", ll: [17.1621, 104.1468], name: "Pak Mor Paris (ข้าวเกรียบปากหม้อ)", q: "546W+RPJ ซอยเปรมปรีดา 7 สกลนคร", addr: "546W+RPJ ซอยเปรมปรีดา 7 ตำบลธาตุเชิงชุม อำเภอเมืองสกลนคร 47000",
     hours: ["09:00","19:00"], closedDow: [3], tel: ["042 713 796"], link: "https://www.wongnai.com/restaurants/kaokreabpakmhorparis", linkLabel: "Wongnai",
     info: "เสิร์ฟเร็ว แป้งบางนุ่ม ข้าวเกรียบกรอบใส่ไข่ ปากหม้อกล่อง ปิดวันพุธ" },
-  mitre: { name: "Mitre Uppratham Restaurant", q: "Mitre Uppratham Restaurant สกลนคร", addr: "37 ถนนสุขเกษม ตำบลธาตุเชิงชุม อำเภอเมืองสกลนคร 47000",
+  mitre: { why: "ร้านเก่าในเมือง กับข้าวไทยรสคุ้นเคย ไข่เจียวหมูสับและแกงเลียง", name: "Mitre Uppratham Restaurant", q: "Mitre Uppratham Restaurant สกลนคร", addr: "37 ถนนสุขเกษม ตำบลธาตุเชิงชุม อำเภอเมืองสกลนคร 47000",
     hours: ["07:00","14:00"], closedDow: [2], tel: ["042 711 633"], info: "ไข่เจียวหมูสับ กะเพราหมูสับ แกงเลียง ปิดวันอังคาร" },
-  saban: { name: "Saban Nga Restaurant", q: "Saban Nga Restaurant สกลนคร", addr: "1782/13 ถนนรัฐพัฒนา ตำบลธาตุเชิงชุม อำเภอเมืองสกลนคร 47000",
+  saban: { why: "อาหารไทยและอีสาน นั่งสบาย แกงหวายซี่โครงหมู เนื้อโคขุนย่าง", name: "Saban Nga Restaurant", q: "Saban Nga Restaurant สกลนคร", addr: "1782/13 ถนนรัฐพัฒนา ตำบลธาตุเชิงชุม อำเภอเมืองสกลนคร 47000",
     hours: ["10:30","21:00"], tel: ["088 983 1282","080 411 2899"], link: "https://www.facebook.com/SabanngaSakon/?locale=th_TH", linkLabel: "Facebook ร้าน",
     info: "แกงหวายซี่โครงหมู เนื้อโคขุนย่าง ต้มยำปลาแม่น้ำ" },
-  pon: { ll: [17.1492, 104.1332], name: "เตาถ่าน โคขุนโพนยางคำ", en: "Pon Yang Kham Grill", q: "44XM+M7V สกลนคร", addr: "44XM+M7V ตำบลธาตุนาเวง อำเภอเมืองสกลนคร 47000",
+  pon: { why: "ปิ้งย่างเนื้อโคขุนโพนยางคำบนเตาถ่าน เหมาะเป็นมื้อเย็นหลังขับรถทั้งวัน", ll: [17.1492, 104.1332], name: "เตาถ่าน โคขุนโพนยางคำ", en: "Pon Yang Kham Grill", q: "44XM+M7V สกลนคร", addr: "44XM+M7V ตำบลธาตุนาเวง อำเภอเมืองสกลนคร 47000",
     hours: ["11:00","23:00"], closedDow: [3], tel: ["083 343 4447","042 715 567","042 171 447"], info: "ปิ้งย่างเนื้อโคขุนโพนยางคำบนเตาถ่าน ปิดวันพุธ" },
-  farm: { name: "Farm Hug", q: "Farm Hug สกลนคร นาแก", addr: "263 หมู่ที่ 10 ถนนสกลนคร–นาแก ตำบลโนนหอม อำเภอเมืองสกลนคร 47000",
+  farm: { why: "สเต๊กเนื้อโคขุนและจานร้อน ริมถนนสกลนคร–นาแก ไปรถสะดวก", name: "Farm Hug", q: "Farm Hug สกลนคร นาแก", addr: "263 หมู่ที่ 10 ถนนสกลนคร–นาแก ตำบลโนนหอม อำเภอเมืองสกลนคร 47000",
     hours: ["10:00","21:00"], tel: ["098 929 3565","088 572 6288"], link: "https://www.facebook.com/farmhug.snk", linkLabel: "Facebook ร้าน",
     info: "สเต๊กเนื้อโคขุน จานร้อน รีวิวบน Google Maps กว่า 1,100 รีวิว" }
 };
@@ -296,6 +303,43 @@ function placeBody(id, day, slotStart) {
   return { badge: badge(p, day, slotStart), html: "<dl>" + rows.map(r => "<dt>" + r[0] + "</dt><dd>" + r[1] + "</dd>").join("") + "</dl>" + '<div class="btns">' + btns + "</div>" };
 }
 
+
+/* ---------- notes, cost, route links ---------- */
+let extra = {};
+try { extra = JSON.parse(localStorage.getItem("sakon-extra") || "{}"); } catch (e) { extra = {}; }
+const saveExtra = () => { try { localStorage.setItem("sakon-extra", JSON.stringify(extra)); } catch (e) {} };
+const baht = n => Number(n || 0).toLocaleString("th-TH");
+function dayTotal(day) { return day.items.reduce((t, _, i) => t + (Number((extra[day.id + i] || {}).c) || 0), 0); }
+function noteBlock(key) {
+  const x = extra[key] || {};
+  return '<details class="more"><summary>บันทึกและค่าใช้จ่าย</summary>' +
+    '<label class="field">ค่าใช้จ่ายที่นี่ (บาท)<input type="number" inputmode="numeric" min="0" data-c="' + key + '" value="' + (x.c || "") + '"></label>' +
+    '<label class="field">บันทึก<textarea data-n="' + key + '">' + esc(x.n || "") + "</textarea></label></details>";
+}
+function located(it) { return it.p ? it.p : (it.opts && it.opts.length === 1 ? it.opts[0] : null); }
+function dirUrl(from, to) {
+  return "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=" + encodeURIComponent(P[from].q) + "&destination=" + encodeURIComponent(P[to].q);
+}
+function legRow(day, i) {
+  const a = located(day.items[i]);
+  if (!a) return "";
+  let j = i + 1;
+  while (j < day.items.length && !located(day.items[j])) j++;
+  if (j >= day.items.length) return "";
+  const b = located(day.items[j]);
+  if (a === b) return "";
+  if (onlyEat && day.items[i].kind !== "eat") return "";
+  return '<li class="leg"><a href="' + dirUrl(a, b) + '" target="_blank" rel="noopener">ดูเวลาเดินทางไป ' + esc(P[b].name) + "</a></li>";
+}
+function routeUrl(day) {
+  const seq = [];
+  day.items.forEach(it => { const p = located(it); if (p && seq[seq.length - 1] !== p) seq.push(p); });
+  if (seq.length < 2) return "";
+  const qs = seq.map(id => encodeURIComponent(P[id].q));
+  return "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=" + qs[0] + "&destination=" + qs[qs.length - 1] +
+    (qs.length > 2 ? "&waypoints=" + qs.slice(1, -1).join("%7C") : "");
+}
+
 function renderDay(day) {
   const n = bkkNow();
   const isToday = n.date === day.date;
@@ -307,7 +351,9 @@ function renderDay(day) {
   const total = day.items.length, dn = day.items.filter((_, i) => done[day.id + i]).length;
   let html = '<div class="daytitle"><h2>' + esc(day.label) + "</h2><span>" + (day.dow === 4 ? "ไม่มีรถเช่า" : "มีรถเช่า") + "</span></div>";
   html += '<p class="theme">' + esc(day.theme) + "</p>";
-  html += '<div class="toolbar"><button class="chip" id="eatf" aria-pressed="' + onlyEat + '">เฉพาะมื้ออาหาร</button><span class="progress">เสร็จแล้ว ' + dn + "/" + total + "</span></div>";
+  const ru = routeUrl(day);
+  if (ru) html += '<div class="btns" style="margin:0 0 12px"><a class="btn" href="' + ru + '" target="_blank" rel="noopener">เปิดเส้นทางทั้งวันใน Google Maps</a></div>';
+  html += '<div class="toolbar"><button class="chip" id="eatf" aria-pressed="' + onlyEat + '">เฉพาะมื้ออาหาร</button><span class="progress">เสร็จแล้ว ' + dn + "/" + total + '</span></div><p class="note total">ค่าใช้จ่ายรวมวันนี้ <b id="dtotal">' + baht(dayTotal(day)) + "</b> บาท</p>";
   html += '<ol class="timeline">';
   items.forEach(({ it, i }) => {
     const key = day.id + i;
@@ -317,13 +363,13 @@ function renderDay(day) {
     if (it.opts) {
       inner += it.opts.map(id => {
         const b = placeBody(id, day, it.s);
-        return '<div class="opt"><div class="title">' + esc(P[id].name) + '</div>' + (P[id].en ? '<div class="sub">' + esc(P[id].en) + "</div>" : "") + b.badge +
+        return '<div class="opt"><div class="title">' + esc(P[id].name) + '</div>' + (P[id].en ? '<div class="sub">' + esc(P[id].en) + "</div>" : "") + (P[id].why ? '<p class="why">' + esc(P[id].why) + "</p>" : "") + b.badge +
           '<details class="more"><summary>รายละเอียด</summary>' + b.html + "</details></div>";
       }).join("");
     } else if (it.p) {
       const b = placeBody(it.p, day, it.s);
       sub.push(P[it.p].name + (P[it.p].en ? "" : ""));
-      inner += (P[it.p].en ? '<div class="sub">' + esc(P[it.p].en) + "</div>" : "") + b.badge +
+      inner += (P[it.p].en ? '<div class="sub">' + esc(P[it.p].en) + "</div>" : "") + (P[it.p].why ? '<p class="why">' + esc(P[it.p].why) + "</p>" : "") + b.badge +
         '<details class="more"><summary>รายละเอียด รูป และนำทาง</summary>' + b.html + "</details>";
     }
     const cls = "slot" + (done[key] ? " done" : "") + (i === nowIdx ? " now" : "");
@@ -332,7 +378,7 @@ function renderDay(day) {
       '<div class="card"><span class="tag">' + TAG[it.kind] + "</span>" + (i === nowIdx ? '<span class="nowflag">ตอนนี้</span>' : "") +
       '<div class="head"><input type="checkbox" data-k="' + key + '" id="c' + key + '" aria-label="ทำแล้ว: ' + esc(it.title) + '"' + (done[key] ? " checked" : "") + '>' +
       '<label for="c' + key + '" class="title">' + esc(it.title) + "</label></div>" +
-      (it.note ? '<p class="note">' + esc(it.note) + "</p>" : "") + inner + "</div></li>";
+      (it.note ? '<p class="note">' + esc(it.note) + "</p>" : "") + inner + noteBlock(key) + "</div></li>" + legRow(day, i);
   });
   html += "</ol>";
   return html;
@@ -375,13 +421,21 @@ function show() {
     done[cb.dataset.k] = cb.checked; if (!cb.checked) delete done[cb.dataset.k]; save();
     const y = scrollY; show(); scrollTo(0, y);
   });
+  document.querySelectorAll("input[data-c]").forEach(el => el.onchange = () => {
+    const k = el.dataset.c; (extra[k] = extra[k] || {}).c = el.value; saveExtra();
+    const d = DAYS.find(x => x.id === (location.hash.replace("#", "") || pickStart())) || DAYS[0];
+    const t = $("#dtotal"); if (t) t.textContent = baht(dayTotal(d));
+  });
+  document.querySelectorAll("textarea[data-n]").forEach(el => el.onchange = () => {
+    const k = el.dataset.n; (extra[k] = extra[k] || {}).n = el.value; saveExtra();
+  });
   document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => { location.hash = b.dataset.v; scrollTo(0, 0); });
   const nowEl = document.querySelector(".slot.now");
   if (nowEl) nowEl.scrollIntoView({ block: "center" });
 }
 window.addEventListener("hashchange", show);
 show();
-setInterval(() => { if (!document.hidden && !document.querySelector("details[open]")) { const y = scrollY; show(); scrollTo(0, y); } }, 60000);
+setInterval(() => { if (!document.hidden && !document.querySelector("details[open]") && !/INPUT|TEXTAREA/.test((document.activeElement || {}).tagName || "")) { const y = scrollY; show(); scrollTo(0, y); } }, 60000);
 </script>
 </body>
 </html>
