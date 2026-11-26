@@ -107,6 +107,7 @@ main { padding: 14px 16px 24px; max-width: 640px; margin: 0 auto; }
 .field { display: grid; gap: 6px; margin: 6px 0 10px; font-size: 14px; color: var(--muted); }
 .field input, .field textarea { font: inherit; font-size: 16px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%; }
 .field textarea { min-height: 64px; resize: vertical; }
+.embed { width: 100%; height: 280px; border: 1px solid var(--line); border-radius: 10px; margin-top: 8px; background: var(--paper); }
 .total { font-variant-numeric: tabular-nums; }
 .note { margin: 6px 0 0; font-size: 15px; }
 .nowflag { display: inline-block; font-size: 12px; font-weight: 700; color: #fff; background: var(--lake); padding: 1px 8px; border-radius: 10px; margin-left: 6px; vertical-align: 1px; }
@@ -300,7 +301,8 @@ function placeBody(id, day, slotStart) {
     (p.ll ? '<a class="btn alt" href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=' + p.ll.join(",") + '" target="_blank" rel="noopener">Street View</a>' : "") +
     (p.tel ? '<a class="btn alt" href="' + telUrl(p.tel[0]) + '">โทร ' + esc(p.tel[0]) + "</a>" : "") +
     (p.link ? '<a class="btn alt" href="' + esc(p.link) + '" target="_blank" rel="noopener">' + esc(p.linkLabel || "ลิงก์") + "</a>" : "");
-  return { badge: badge(p, day, slotStart), html: "<dl>" + rows.map(r => "<dt>" + r[0] + "</dt><dd>" + r[1] + "</dd>").join("") + "</dl>" + '<div class="btns">' + btns + "</div>" };
+  const map = '<button type="button" class="btn alt" data-embed="' + esc(p.q) + '" style="width:100%;margin-top:8px">แสดงแผนที่และรูปในหน้านี้</button><div class="embedbox"></div>';
+  return { badge: badge(p, day, slotStart), html: "<dl>" + rows.map(r => "<dt>" + r[0] + "</dt><dd>" + r[1] + "</dd>").join("") + "</dl>" + '<div class="btns">' + btns + "</div>" + map };
 }
 
 
@@ -428,6 +430,12 @@ function show() {
   });
   document.querySelectorAll("textarea[data-n]").forEach(el => el.onchange = () => {
     const k = el.dataset.n; (extra[k] = extra[k] || {}).n = el.value; saveExtra();
+  });
+  document.querySelectorAll("button[data-embed]").forEach(bt => bt.onclick = () => {
+    const box = bt.nextElementSibling;
+    if (box.firstChild) { box.innerHTML = ""; bt.textContent = "แสดงแผนที่และรูปในหน้านี้"; return; }
+    box.innerHTML = '<iframe class="embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="แผนที่ Google" src="https://www.google.com/maps?q=' + encodeURIComponent(bt.dataset.embed) + '&hl=th&z=15&output=embed"></iframe>';
+    bt.textContent = "ซ่อนแผนที่";
   });
   document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => { location.hash = b.dataset.v; scrollTo(0, 0); });
   const nowEl = document.querySelector(".slot.now");
