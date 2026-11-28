@@ -102,6 +102,14 @@ main { padding: 14px 16px 24px; max-width: 640px; margin: 0 auto; }
 .slot[data-kind="move"] .tag { background: var(--line); color: var(--muted); }
 .slot[data-kind="rest"] .tag { background: var(--ok-soft); color: var(--ok); }
 .why { margin: 4px 0 4px; font-size: 15px; color: var(--ink); }
+.pl { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px; margin-top: 6px; align-items: start; }
+.pl .pic { display: block; width: 96px; height: 96px; border-radius: 10px; overflow: hidden; background: var(--line); }
+.pl .pic img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.plt { min-width: 0; }
+.plt .why { margin-top: 0; }
+.cred { grid-column: 1 / -1; margin: 0; font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+.pl.noimg { display: block; }
+.pl.noimg .pic, .pl.noimg .cred { display: none; }
 .leg { margin: -2px 0 0; padding-left: 66px; font-size: 14px; }
 .leg a { display: inline-flex; align-items: center; min-height: 40px; color: var(--indigo); font-weight: 600; text-decoration: none; border-bottom: 1px dashed var(--indigo); }
 .field { display: grid; gap: 6px; margin: 6px 0 10px; font-size: 14px; color: var(--muted); }
@@ -222,6 +230,22 @@ const P = {
 };
 
 // kind: go | eat | move | rest. p = single place, opts = alternatives (choose one)
+// รูปจาก Wikimedia Commons (ใช้ซ้ำได้ตามสัญญาอนุญาตที่ระบุ) มีเฉพาะที่หาเจอ ที่ไม่มีรูปจะแสดงการ์ดแบบเดิม
+const IMG = {
+  wat: { f: "Prathat_Cherng_Chum_Temple_(1).jpg", by: "Chaiyathat", lic: "CC BY-SA 4.0", cap: "วัดพระธาตุเชิงชุม" },
+  lake: { f: "Nong_Han_Lake_(2499138321).jpg", by: "nakhon100", lic: "CC BY 2.0", cap: "สะพานริมหนองหาร" },
+  phuphan: { f: "Phu_Phan_Mountains_-_view_from_Wat_Tham_Kham.jpg", by: "Mattes", lic: "สาธารณสมบัติ", cap: "เทือกเขาภูพาน ถ่ายจากวัดถ้ำคำ" },
+  cathedral: { f: "St._Michael_the_Archangel_Cathedral.jpg", by: "วลัญช์สุ", lic: "CC0", cap: "อาสนวิหารเซนต์ไมเคิล" },
+  tharae: { f: "Ban_Tharae_(5873120869).jpg", by: "nakhon100", lic: "CC BY 2.0", cap: "ป้ายอาสนวิหาร ที่ท่าแร่" }
+};
+function placeRow(id, inner) {
+  const m = IMG[id];
+  if (!m) return inner;
+  return '<div class="pl"><a class="pic" href="https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(m.f) + '" target="_blank" rel="noopener" aria-label="เปิดรูปต้นฉบับ: ' + esc(m.cap) + '">' +
+    '<img src="https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(m.f) + '?width=400" alt="' + esc(m.cap) + '" loading="lazy" decoding="async" onerror="this.closest(\'.pl\').classList.add(\'noimg\')"></a>' +
+    '<div class="plt">' + inner + '</div><p class="cred">รูป: ' + esc(m.by) + " · " + esc(m.lic) + " · Wikimedia Commons</p></div>";
+}
+
 const DAYS = [
  { id: "d1", date: "2026-12-10", dow: 4, short: "พฤ.", num: "10", label: "พฤหัสบดีที่ 10 ธ.ค.", car: "รับรถ 16:00", theme: "เมืองสกลนครช่วงเช้า รับรถ 16:00 แล้วไปถ่ายพระอาทิตย์ตกที่หนองหาร",
   items: [
@@ -390,13 +414,13 @@ function renderDay(day) {
     if (it.opts) {
       inner += it.opts.map(id => {
         const b = placeBody(id, day, it.s);
-        return '<div class="opt"><div class="title">' + esc(P[id].name) + '</div>' + (P[id].en ? '<div class="sub">' + esc(P[id].en) + "</div>" : "") + (P[id].why ? '<p class="why">' + esc(P[id].why) + "</p>" : "") + b.badge +
+        return '<div class="opt"><div class="title">' + esc(P[id].name) + '</div>' + placeRow(id, (P[id].en ? '<div class="sub">' + esc(P[id].en) + "</div>" : "") + (P[id].why ? '<p class="why">' + esc(P[id].why) + "</p>" : "") + b.badge) +
           '<details class="more"><summary>รายละเอียด</summary>' + b.html + "</details></div>";
       }).join("");
     } else if (it.p) {
       const b = placeBody(it.p, day, it.s);
       sub.push(P[it.p].name + (P[it.p].en ? "" : ""));
-      inner += (P[it.p].en ? '<div class="sub">' + esc(P[it.p].en) + "</div>" : "") + (P[it.p].why ? '<p class="why">' + esc(P[it.p].why) + "</p>" : "") + b.badge +
+      inner += placeRow(it.p, (P[it.p].en ? '<div class="sub">' + esc(P[it.p].en) + "</div>" : "") + (P[it.p].why ? '<p class="why">' + esc(P[it.p].why) + "</p>" : "") + b.badge) +
         '<details class="more"><summary>รายละเอียด รูป และนำทาง</summary>' + b.html + "</details>";
     }
     const cls = "slot" + (done[key] ? " done" : "") + (i === nowIdx ? " now" : "");
